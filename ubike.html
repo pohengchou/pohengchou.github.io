@@ -74,72 +74,77 @@
 
 						<!-- Two -->
 							<section id="two" class="spotlights">
-							<!-- 104職缺資料爬蟲 -->
+							<!-- 資料流程 -->
 							<section>
-								<a href="https://github.com/pohengchou/jobs_analysis_personal_project/blob/main/src/crawler/104_crawler.py" target="_blank" class="image">
-								<img src="images/web_scraper.jpg" alt="爬蟲流程" data-position="center center" />
+								<a target="_blank" class="image">
+								<img src="images/資料流.png" alt="資料流" data-position="center center" />
 								</a>
 								<div class="content">
 								<div class="inner">
 									<header class="major">
-									<h3>Step 1：104職缺資料爬蟲</h3>
+									<h3>數據流程圖</h3>
 									</header>
-									<p>使用 Python 中的 requests 以及 pandas，自動化爬取 104 職缺網站，取得json格式的回傳值，包含欄位如「薪資」、「產業」、「技能需求」等。</p>
+									<p>本專案建構了完整的雲原生 ELT 數據管線。核心流程與技術棧如下：</p>
+                                    <ul>
+                                        <li>數據採集與載入 (E/L): 從 API 採集數據，並透過 Apache Airflow 協調，將數據載入 GCS (Data Lake) 及 BigQuery (Data Warehouse)。</li>
+                                        <li>數據轉換與建模 (T): 使用 dbt 在 BigQuery 內部進行數據建模，生成乾淨的 Dim/Fact 分析表。</li>
+                                        <li>基礎設施管理 (IaC): 整個雲端環境（GCP 資源）皆由 Terraform 進行自動化部署與管理。</li>
+                                    </ul>
+								</div>
+								</div>
+							</section>
+
+							<!-- terraform -->
+							<section>
+								<a href="https://github.com/pohengchou/terraform/blob/master/main.tf" target="_blank" class="image">
+								<img src="images/terraform01.png" alt="terraform" data-position="top center" />
+								</a>
+								<div class="content">
+								<div class="inner">
+									<header class="major">
+									<h3>Step 1：Terraform (IaC)建置雲端資源</h3>
+									</header>
+									<p>本步驟使用 Terraform (Infrastructure as Code) 於 Google Cloud Platform (GCP) 上自動化部署所有所需的雲端資源。包含：GCS 儲存桶 (Data Lake)、BigQuery 資料集 (Data Warehouse) 以及用於運行 Airflow 的 Compute Engine (VM) 實例。</p>
+                                    <p>此做法確保了整個數據平台的環境配置具有可複製性和版本控制。</p>
 									<ul class="actions">
-									<li><a href="https://github.com/pohengchou/jobs_analysis_personal_project/blob/main/src/crawler/104_crawler.py" target="_blank" class="button">GitHub 連結</a></li>
+									<li><a href="https://github.com/pohengchou/terraform/blob/master/main.tf" target="_blank" class="button">GitHub 連結</a></li>
 									</ul>
 								</div>
 								</div>
 							</section>
 
-							<!-- 匯入與 SQL 篩選預處理 -->
+							<!-- airflow -->
 							<section>
-								<a href="https://github.com/pohengchou/jobs_analysis_personal_project/blob/main/src/database/02_to_mssql_104_%E8%87%AA%E5%B7%B1%E5%AF%AB.py" target="_blank" class="image">
-								<img src="images/storage.jpg" alt="清理流程" data-position="top center" />
+								<a href="https://github.com/pohengchou/ubike_cosmos/blob/main/dags/ubike.py" target="_blank" class="image">
+								<img src="images/AirflowLogo.png" alt="airflow" data-position="25% 25%" />
 								</a>
 								<div class="content">
 								<div class="inner">
 									<header class="major">
-									<h3>Step 2：匯入與 SQL 篩選預處理</h3>
+									<h3>Step 2：Airflow + Cosmos 流程協調 </h3>
 									</header>
-									<p>將職缺資料匯入 Microsoft SQL Server，撰寫 SQL 指令進行欄位預篩選。</p>
+									<p>本步驟使用 Apache Airflow 進行週期性排程與流程協調。DAGs 負責從 API 採集數據並載入 GCS 和 BigQuery。</p>
+                                    <p>導入 Cosmos 來無縫整合 dbt 專案，確保 E/L 完成後自動觸發 T 步驟，實現強健的 ELT 自動化。</p>
 									<ul class="actions">
-									<li><a href="https://github.com/pohengchou/jobs_analysis_personal_project/blob/main/src/database/02_to_mssql_104_%E8%87%AA%E5%B7%B1%E5%AF%AB.py" target="_blank" class="button">GitHub 連結</a></li>
+									<li><a href="https://github.com/pohengchou/ubike_cosmos/blob/main/dags/ubike.py" target="_blank" class="button">GitHub 連結</a></li>
 									</ul>
 								</div>
 								</div>
 							</section>
-
-							<!-- Python 資料清理與探索 -->
+							<!-- dbt -->
 							<section>
-								<a href="https://github.com/pohengchou/jobs_analysis_personal_project/blob/main/src/cleaning/104_cleaning.ipynb" target="_blank" class="image">
-								<img src="images/cleaning.jpeg" alt="分析流程" data-position="25% 25%" />
-								</a>
-								<div class="content">
-								<div class="inner">
-									<header class="major">
-									<h3>Step 3：資料清理</h3>
-									</header>
-									<p>對資料進行清理，針對「薪資」、「產業」、「條件要求」等分析主要欄位進行特徵工程，以利後續分析、檢定。</p>
-									<ul class="actions">
-									<li><a href="https://github.com/pohengchou/jobs_analysis_personal_project/blob/main/src/cleaning/104_cleaning.ipynb" target="_blank" class="button">GitHub 連結</a></li>
-									</ul>
-								</div>
-								</div>
-							</section>
-							<!-- Power BI 視覺化 -->
-							<section>
-								<a href="https://app.powerbi.com/view?r=eyJrIjoiMDBlNDJkNzUtMGYyNC00NDJmLThhMWUtM2ViMGU4MDQ1MWVhIiwidCI6ImUzYjU2ZjQzLTUyZjctNGQzZi05MGQ4LTkxZWVkYjZhM2UwMiJ9" class="image" target="_blank">
-									<img src="images/powerbi.jpg" alt="Power BI Dashboard" data-position="top center" />
+								<a href="https://github.com/pohengchou/dbt_demo/blob/main/models/staging/sources.yml" class="image" target="_blank">
+									<img src="images/dbt-logo.png" alt="dbt" data-position="top center" />
 								</a>
 								<div class="content">
 									<div class="inner">
 										<header class="major">
-											<h3>Step 4：Power BI 視覺化探索</h3>
+											<h3>Step 3：dbt 數據建模與品質保證</h3>
 										</header>
-										<p>將清理後的 CSV 資料匯入 Power BI，製作互動式報表與圖卡，呈現技能熱度排行、地區職缺數、薪資中位數趨勢等資訊，協助視覺化洞察職缺趨勢。</p>
+										<p>數據在 BigQuery 中透過 dbt (data build tool) 進行轉換與建模。我們依循 Kimball 維度建模原則，建構 Star Schema。</p>
+                                        <p>此外，利用 dbt Tests 實施數據品質檢查，確保模型具備唯一性 (unique) 和非空值 (not null) 等規範。</p>
 										<ul class="actions">
-											<li><a href="https://app.powerbi.com/view?r=eyJrIjoiMDBlNDJkNzUtMGYyNC00NDJmLThhMWUtM2ViMGU4MDQ1MWVhIiwidCI6ImUzYjU2ZjQzLTUyZjctNGQzZi05MGQ4LTkxZWVkYjZhM2UwMiJ9" target="_blank" class="button">查看 Dashboard</a></li>
+											<li><a href="https://github.com/pohengchou/dbt_demo/blob/main/models/staging/sources.yml" target="_blank" class="button">GitHub 連結</a></li>
 										</ul>
 									</div>
 								</div>
@@ -147,23 +152,24 @@
 
 							<!-- 統計分析 -->
 							<section>
-								<a href="https://github.com/pohengchou/jobs_analysis_personal_project/blob/main/src/cleaning/salary_t-test.ipynb" target="_blank" class="image">
-									<img src="images/statistic.jpg" alt="統計分析" data-position="center center" />
+								<a href="https://www.canva.com/design/DAG0pCESlKQ/DE3m-5HEvTA2GflzU0vBqg/edit?utm_content=DAG0pCESlKQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" class="image">
+									<img src="images/dag.png" alt="統計分析" data-position="center center" />
 								</a>
 								<div class="content">
 									<div class="inner">
 										<header class="major">
-											<h3>Step 5：統計檢定分析</h3>
+											<h3>Step 4：數據成果：Dim/Fact 分析資料表</h3>
 										</header>
-										<p>使用 SciPy 進行 t 檢定與卡方檢定，探索如「是否具備 Python 技能」對薪資的顯著性差異，與「不同產業」與「面議」是否具有統計關聯。</p>
+										<p>最終成果為 BigQuery 中乾淨、可供分析的 Dim/Fact 資料表。這些模型已完成數據的結構化、基礎清洗（如空值處理）和格式統一。</p>
+                                        <p>透過 dbt 實施的數據測試 (dbt Tests)，確保了最終分析模型具備高度的準確性和一致性，可直接連接至 Power BI 或 Google Data Studio 等 BI 工具，為業務分析師提供高價值的數據資產。</p>
 										<ul class="actions">
-											<li><a href="https://github.com/pohengchou/jobs_analysis_personal_project/blob/main/src/cleaning/salary_t-test.ipynb" target="_blank" class="button">GitHub 連結</a></li>
+											<li><a href="https://www.canva.com/design/DAG0pCESlKQ/DE3m-5HEvTA2GflzU0vBqg/edit?utm_content=DAG0pCESlKQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" class="button">Canvas簡報 連結</a></li>
 										</ul>
 									</div>
 								</div>
 							</section>
 
-							<!-- Canva 簡報 -->
+							<!-- Canva 簡報
 							<section>
 								<a href="https://www.canva.com/design/DAGvA9ZMxac/2HI4sOxWt7Htxy8txyc5Eg/edit?utm_content=DAGvA9ZMxac&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" class="image">
 									<img src="images/presentation.jpg" alt="專案簡報" data-position="top center" />
@@ -171,7 +177,7 @@
 								<div class="content">
 									<div class="inner">
 										<header class="major">
-											<h3>Step 6：簡報與專案總結</h3>
+											<h3>成果：事實資料表/維度資料表</h3>
 										</header>
 										<p>將整體專案成果彙整於 Canva 簡報中，包含數據來源、清洗流程、分析洞察與個人求職行動建議，使專案不僅具備技術性，亦能有效傳達價值與應用。</p>
 										<ul class="actions">
@@ -179,7 +185,7 @@
 										</ul>
 									</div>
 								</div>
-							</section>
+							</section> -->
 							</section>
 
 
